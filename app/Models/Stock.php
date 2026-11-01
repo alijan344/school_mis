@@ -10,7 +10,6 @@ class Stock extends Model
     use HasFactory;
 
     protected $table = 'stock';
-
     protected $primaryKey = 'stock_id';
 
     public $timestamps = false;
@@ -31,19 +30,11 @@ class Stock extends Model
 
     public function stockIns()
     {
-        return $this->hasMany(
-            StockIn::class,
-            'stock_id',
-            'stock_id'
-        );
+        return $this->hasMany(StockIn::class, 'stock_id', 'stock_id');
     }
 
     public function stockOuts()
     {
-        return $this->hasMany(
-            Stock::class,
-            'stock_id',
-            'stock_id'
-        );
+        return $this->hasMany(StockOut::class, 'stock_id', 'stock_id');
     }
 }

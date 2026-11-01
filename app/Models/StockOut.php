@@ -10,7 +10,6 @@ class StockOut extends Model
     use HasFactory;
 
     protected $table = 'stock_out';
-
     protected $primaryKey = 'stock_out_id';
 
     public $timestamps = false;
@@ -34,10 +33,6 @@ class StockOut extends Model
 
     public function stock()
     {
-        return $this->belongsTo(
-            Stock::class,
-            'stock_id',
-            'stock_id'
-        );
+        return $this->belongsTo(Stock::class, 'stock_id', 'stock_id');
     }
 }

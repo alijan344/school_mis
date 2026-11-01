@@ -19,6 +19,10 @@ class Classes extends Model
         'class_name',
         'fees',
     ];
+    public function getRouteKeyName(): string
+{
+    return 'class_id';
+}
 
     protected function casts(): array
     {

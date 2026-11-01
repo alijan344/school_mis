@@ -5,19 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
-
     protected $primaryKey = 'staff_id';
-
     protected $keyType = 'int';
 
     public $incrementing = false;
-
     public $timestamps = false;
 
     protected $fillable = [
@@ -40,19 +38,11 @@ class User extends Authenticatable
 
     public function staff()
     {
-        return $this->belongsTo(
-            Staff::class,
-            'staff_id',
-            'staff_id'
-        );
+        return $this->belongsTo(Staff::class, 'staff_id', 'staff_id');
     }
 
     public function userLevel()
     {
-        return $this->hasOne(
-            UserLevel::class,
-            'staff_id',
-            'staff_id'
-        );
+        return $this->hasOne(UserLevel::class, 'staff_id', 'staff_id');
     }
 }
