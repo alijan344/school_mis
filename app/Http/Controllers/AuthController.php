@@ -3,13 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserLevel;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'staff_id' => [
+                'required',
+                'integer',
+                Rule::exists('staff', 'staff_id')->where('status', 1),
+                Rule::unique('users', 'staff_id'),
+            ],
+            'username' => [
+                'required',
+                'string',
+                'max:64',
+                'unique:users,username',
+            ],
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+            ],
+        ]);
+
+        $user = DB::transaction(function () use ($validated) {
+            $user = User::create([
+                'staff_id' => $validated['staff_id'],
+                'username' => $validated['username'],
+                'password' => $validated['password'],
+            ]);
+
+            UserLevel::create([
+                'staff_id' => $user->staff_id,
+            ]);
+
+            return $user;
+        });
+
+        $user->load(['staff', 'userLevel']);
+
+        return response()->json([
+            'message' => 'User registered successfully.',
+            'user' => new UserResource($user),
+        ], 201);
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -26,11 +74,14 @@ class AuthController extends Controller
             !Hash::check($credentials['password'], $user->password)
         ) {
             throw ValidationException::withMessages([
-                'username' => ['The provided credentials are incorrect.'],
+                'username' => [
+                    'The provided credentials are incorrect.',
+                ],
             ]);
         }
 
-        $token = $user->createToken('school-mis-token')->plainTextToken;
+        $token = $user->createToken('school-mis-token')
+            ->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful.',
