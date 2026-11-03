@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Teacher extends Model
 {
@@ -58,6 +60,37 @@ class Teacher extends Model
         ];
     }
 
+    // Approximate age accessor
+    protected function age(): Attribute
+    {
+        return Attribute::get(function (): ?int {
+            if (!$this->birth_year) {
+                return null;
+            }
+
+            return max(0, now()->year - (int) $this->birth_year);
+        });
+    }
+
+    // Filter by status
+    public function scopeStatus(Builder $query, int|string $status): Builder
+    {
+        return $query->where('status', $status);
+    }
+
+    // Search teachers
+    public function scopeSearch(Builder $query, string $term): Builder
+    {
+        return $query->where(function (Builder $inner) use ($term) {
+            $inner->where('firstname', 'like', "%{$term}%")
+                ->orWhere('lastname', 'like', "%{$term}%")
+                ->orWhere('fathername', 'like', "%{$term}%")
+                ->orWhere('phone', 'like', "%{$term}%")
+                ->orWhere('email', 'like', "%{$term}%")
+                ->orWhere('education_field', 'like', "%{$term}%");
+        });
+    }
+
     public function documents()
     {
         return $this->hasMany(
@@ -84,13 +117,13 @@ class Teacher extends Model
             'teacher_id'
         );
     }
-    public function timetables()
-{
-    return $this->hasMany(
-        Timetable::class,
-        'teacher_id',
-        'teacher_id'
-    );
-}
 
+    public function timetables()
+    {
+        return $this->hasMany(
+            Timetable::class,
+            'teacher_id',
+            'teacher_id'
+        );
+    }
 }

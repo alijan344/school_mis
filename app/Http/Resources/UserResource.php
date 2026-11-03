@@ -13,6 +13,8 @@ class UserResource extends JsonResource
             'staff_id' => $this->staff_id,
             'username' => $this->username,
 
+            'avatar_url' => $this->avatar_url,
+
             'staff' => $this->whenLoaded(
                 'staff',
                 fn () => $this->staff ? [

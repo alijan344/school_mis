@@ -17,6 +17,7 @@ class StudentResource extends JsonResource
             'grandfathername' => $this->grandfathername,
             'gender' => $this->gender,
             'birth_year' => $this->birth_year,
+            'age' => $this->age,
             'province' => $this->province,
             'district' => $this->district,
             'current_address' => $this->current_address,

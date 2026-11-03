@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -12,10 +14,13 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
+
     protected $primaryKey = 'staff_id';
+
     protected $keyType = 'int';
 
     public $incrementing = false;
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -26,6 +31,7 @@ class User extends Authenticatable
 
     protected $hidden = [
         'password',
+        'avatar_path',
     ];
 
     protected function casts(): array
@@ -36,13 +42,30 @@ class User extends Authenticatable
         ];
     }
 
+    protected function avatarUrl(): Attribute
+    {
+        return Attribute::get(
+            fn () => $this->avatar_path
+                ? Storage::disk('public')->url($this->avatar_path)
+                : null
+        );
+    }
+
     public function staff()
     {
-        return $this->belongsTo(Staff::class, 'staff_id', 'staff_id');
+        return $this->belongsTo(
+            Staff::class,
+            'staff_id',
+            'staff_id'
+        );
     }
 
     public function userLevel()
     {
-        return $this->hasOne(UserLevel::class, 'staff_id', 'staff_id');
+        return $this->hasOne(
+            UserLevel::class,
+            'staff_id',
+            'staff_id'
+        );
     }
 }

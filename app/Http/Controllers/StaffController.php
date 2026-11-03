@@ -8,11 +8,14 @@ use App\Http\Resources\StaffResource;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 
 class StaffController extends Controller
 {
     public function index(Request $request)
     {
+        Gate::authorize('viewAny', Staff::class);
+
         $query = Staff::query()->with([
             'documents',
             'attendances',
@@ -69,10 +72,13 @@ class StaffController extends Controller
 
     public function store(StoreStaffRequest $request)
     {
+        Gate::authorize('create', Staff::class);
+
         $staff = Staff::create($request->validated());
 
         return (new StaffResource($staff))
-            ->response()->setStatusCode(201);
+            ->response()
+            ->setStatusCode(201);
     }
 
     public function show(string $id)
@@ -83,12 +89,17 @@ class StaffController extends Controller
             'salaries',
         ])->findOrFail($id);
 
+        Gate::authorize('view', $staff);
+
         return new StaffResource($staff);
     }
 
     public function update(UpdateStaffRequest $request, string $id)
     {
         $staff = Staff::findOrFail($id);
+
+        Gate::authorize('update', $staff);
+
         $staff->update($request->validated());
 
         return new StaffResource(
@@ -103,6 +114,8 @@ class StaffController extends Controller
     public function destroy(string $id): JsonResponse
     {
         $staff = Staff::findOrFail($id);
+
+        Gate::authorize('delete', $staff);
 
         if (
             $staff->documents()->exists() ||

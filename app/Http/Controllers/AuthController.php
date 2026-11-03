@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -105,5 +106,48 @@ class AuthController extends Controller
         return new UserResource(
             $request->user()->load(['staff', 'userLevel'])
         );
+    }
+
+    public function uploadAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => [
+                'required',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:2048',
+                'dimensions:max_width=4000,max_height=4000',
+            ],
+        ]);
+
+        $user = $request->user();
+
+        $oldPath = $user->avatar_path;
+
+        $path = $request->file('avatar')->store(
+            'avatars',
+            'public'
+        );
+
+        if (!$path) {
+            return response()->json([
+                'message' => 'Unable to upload avatar.',
+            ], 500);
+        }
+
+        $user->avatar_path = $path;
+        $user->save();
+
+        if ($oldPath) {
+            Storage::disk('public')->delete($oldPath);
+        }
+
+        $user->load(['staff', 'userLevel']);
+
+        return response()->json([
+            'message' => 'Avatar uploaded successfully.',
+            'avatar_url' => $user->avatar_url,
+            'user' => new UserResource($user),
+        ]);
     }
 }

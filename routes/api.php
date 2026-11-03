@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\WelcomeController;
@@ -42,407 +41,458 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\StockInController;
 use App\Http\Controllers\StockOutController;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserLevelController;
 use App\Http\Controllers\AuthController;
 
+
 Route::prefix('v1')->group(function () {
-// ==========================================
-// Test API
-// ==========================================
 
-Route::get('/hello', [WelcomeController::class, 'hello']);
+    // ==========================================
+    // Test API
+    // ==========================================
 
-Route::get('/ping', function () {
-    return response()->json([
-        'pong' => true,
-        'time' => now(),
-    ]);
-});
+    Route::get('/hello', [WelcomeController::class, 'hello']);
 
+    Route::get('/ping', function () {
+        return response()->json([
+            'pong' => true,
+            'time' => now(),
+        ]);
+    });
 
 
-// ==========================================
-// Classes CRUD API
-// ==========================================
+    // ==========================================
+    // Classes CRUD API
+    // ==========================================
 
-Route::apiResource('classes', ClassesController::class);
+    Route::apiResource('classes', ClassesController::class);
 
 
-// ==========================================
-// Class Sections CRUD API
-// ==========================================
+    // ==========================================
+    // Class Sections CRUD API
+    // ==========================================
 
-Route::apiResource('class-sections', ClassSectionController::class)
-    ->parameters([
-        'class-sections' => 'classSection',
-    ]);
+    Route::apiResource('class-sections', ClassSectionController::class)
+        ->parameters([
+            'class-sections' => 'classSection',
+        ]);
 
 
-// ==========================================
-// Chart of Accounts CRUD API
-// ==========================================
+    // ==========================================
+    // Chart of Accounts CRUD API
+    // ==========================================
 
-Route::apiResource('chartofaccounts', ChartofaccountController::class);
+    Route::apiResource('chartofaccounts', ChartofaccountController::class);
 
 
-// ==========================================
-// Income Sources CRUD API
-// ==========================================
+    // ==========================================
+    // Income Sources CRUD API
+    // ==========================================
 
-Route::apiResource('income-sources', IncomeSourceController::class);
+    Route::apiResource('income-sources', IncomeSourceController::class);
 
 
-// ==========================================
-// Subjects CRUD API
-// ==========================================
+    // ==========================================
+    // Subjects CRUD API
+    // ==========================================
 
-Route::apiResource('subjects', SubjectController::class);
+    Route::apiResource('subjects', SubjectController::class);
 
 
-// ==========================================
-// Stock CRUD API
-// ==========================================
+    // ==========================================
+    // Stock CRUD API
+    // ==========================================
 
-Route::apiResource('stocks', StockController::class);
+    Route::apiResource('stocks', StockController::class);
 
 
-// ==========================================
-// Library Books CRUD API
-// ==========================================
+    // ==========================================
+    // Library Books CRUD API
+    // ==========================================
 
-Route::apiResource('lib-books', LibBookController::class);
+    Route::apiResource('lib-books', LibBookController::class);
 
 
-// ==========================================
-// Students CRUD API
-// ==========================================
+    // ==========================================
+    // Students CRUD API
+    // ==========================================
 
-Route::apiResource('students', StudentController::class);
+    Route::apiResource('students', StudentController::class);
 
 
-// ==========================================
-// Student Relatives CRUD API
-// ==========================================
+    // ==========================================
+    // Student Relatives CRUD API
+    // ==========================================
 
-Route::apiResource('student-relatives', StudentRelativeController::class);
+    Route::apiResource('student-relatives', StudentRelativeController::class);
 
 
-// ==========================================
-// Student Transfers CRUD API
-// ==========================================
+    // ==========================================
+    // Student Transfers CRUD API
+    // ==========================================
 
-Route::apiResource('student-transfers', StudentTransferController::class);
+    Route::apiResource('student-transfers', StudentTransferController::class);
 
 
-// ==========================================
-// Student Documents CRUD API
-// ==========================================
+    // ==========================================
+    // Student Documents CRUD API
+    // ==========================================
 
-Route::apiResource('student-documents', StudentDocumentController::class);
+    Route::apiResource('student-documents', StudentDocumentController::class);
 
 
-// ==========================================
-// Student Attendance API
-// Composite Primary Key
-// ==========================================
+    // ==========================================
+    // Student Attendance API
+    // Composite Primary Key
+    // ==========================================
 
-Route::get('student-attendances', [StudentAttendanceController::class, 'index']);
-Route::post('student-attendances', [StudentAttendanceController::class, 'store']);
+    Route::get('student-attendances', [StudentAttendanceController::class, 'index']);
 
-Route::get(
-    'student-attendances/{studentId}/{absentDate}',
-    [StudentAttendanceController::class, 'show']
-);
+    Route::post('student-attendances', [StudentAttendanceController::class, 'store']);
 
-Route::patch(
-    'student-attendances/{studentId}/{absentDate}',
-    [StudentAttendanceController::class, 'update']
-);
+    Route::get(
+        'student-attendances/{studentId}/{absentDate}',
+        [StudentAttendanceController::class, 'show']
+    );
 
-Route::delete(
-    'student-attendances/{studentId}/{absentDate}',
-    [StudentAttendanceController::class, 'destroy']
-);
+    Route::patch(
+        'student-attendances/{studentId}/{absentDate}',
+        [StudentAttendanceController::class, 'update']
+    );
 
+    Route::delete(
+        'student-attendances/{studentId}/{absentDate}',
+        [StudentAttendanceController::class, 'destroy']
+    );
 
-// ==========================================
-// Teachers CRUD API
-// ==========================================
 
-Route::apiResource('teachers', TeacherController::class);
+    // ==========================================
+    // Teachers CRUD API
+    // ==========================================
 
+    Route::apiResource('teachers', TeacherController::class);
 
-// ==========================================
-// Teacher Documents CRUD API
-// ==========================================
 
-Route::apiResource('teacher-documents', TeacherDocumentController::class);
+    // ==========================================
+    // Teacher Documents CRUD API
+    // ==========================================
 
+    Route::apiResource('teacher-documents', TeacherDocumentController::class);
 
-// ==========================================
-// Teacher Attendance API
-// Composite Primary Key
-// ==========================================
 
-Route::get('teacher-attendances', [TeacherAttendanceController::class, 'index']);
-Route::post('teacher-attendances', [TeacherAttendanceController::class, 'store']);
+    // ==========================================
+    // Teacher Attendance API
+    // Composite Primary Key
+    // ==========================================
 
-Route::get(
-    'teacher-attendances/{teacherId}/{year}/{month}/{day}',
-    [TeacherAttendanceController::class, 'show']
-);
+    Route::get('teacher-attendances', [TeacherAttendanceController::class, 'index']);
 
-Route::patch(
-    'teacher-attendances/{teacherId}/{year}/{month}/{day}',
-    [TeacherAttendanceController::class, 'update']
-);
+    Route::post('teacher-attendances', [TeacherAttendanceController::class, 'store']);
 
-Route::delete(
-    'teacher-attendances/{teacherId}/{year}/{month}/{day}',
-    [TeacherAttendanceController::class, 'destroy']
-);
+    Route::get(
+        'teacher-attendances/{teacherId}/{year}/{month}/{day}',
+        [TeacherAttendanceController::class, 'show']
+    );
 
+    Route::patch(
+        'teacher-attendances/{teacherId}/{year}/{month}/{day}',
+        [TeacherAttendanceController::class, 'update']
+    );
 
-// ==========================================
-// Teacher Salary API
-// Composite Primary Key
-// ==========================================
+    Route::delete(
+        'teacher-attendances/{teacherId}/{year}/{month}/{day}',
+        [TeacherAttendanceController::class, 'destroy']
+    );
 
-Route::get('teacher-salaries', [TeacherSalaryController::class, 'index']);
-Route::post('teacher-salaries', [TeacherSalaryController::class, 'store']);
 
-Route::get(
-    'teacher-salaries/{teacherId}/{year}/{month}',
-    [TeacherSalaryController::class, 'show']
-);
+    // ==========================================
+    // Teacher Salary API
+    // Composite Primary Key
+    // ==========================================
 
-Route::patch(
-    'teacher-salaries/{teacherId}/{year}/{month}',
-    [TeacherSalaryController::class, 'update']
-);
+    Route::get('teacher-salaries', [TeacherSalaryController::class, 'index']);
 
-Route::delete(
-    'teacher-salaries/{teacherId}/{year}/{month}',
-    [TeacherSalaryController::class, 'destroy']
-);
+    Route::post('teacher-salaries', [TeacherSalaryController::class, 'store']);
 
+    Route::get(
+        'teacher-salaries/{teacherId}/{year}/{month}',
+        [TeacherSalaryController::class, 'show']
+    );
 
-// ==========================================
-// Staff CRUD API
-// ==========================================
+    Route::patch(
+        'teacher-salaries/{teacherId}/{year}/{month}',
+        [TeacherSalaryController::class, 'update']
+    );
 
-Route::apiResource('staff', StaffController::class);
+    Route::delete(
+        'teacher-salaries/{teacherId}/{year}/{month}',
+        [TeacherSalaryController::class, 'destroy']
+    );
 
 
-// ==========================================
-// Staff Documents CRUD API
-// ==========================================
+    // ==========================================
+    // Staff CRUD API
+    // Sanctum Authentication + StaffPolicy
+    // ==========================================
 
-Route::apiResource('staff-documents', StaffDocumentController::class);
+    Route::middleware('auth:sanctum')
+        ->apiResource('staff', StaffController::class);
 
 
-// ==========================================
-// Staff Attendance API
-// Composite Primary Key
-// ==========================================
+    // ==========================================
+    // Staff Documents CRUD API
+    // ==========================================
 
-Route::get('staff-attendances', [StaffAttendanceController::class, 'index']);
-Route::post('staff-attendances', [StaffAttendanceController::class, 'store']);
+    Route::apiResource('staff-documents', StaffDocumentController::class);
 
-Route::get(
-    'staff-attendances/{staffId}/{year}/{month}/{day}',
-    [StaffAttendanceController::class, 'show']
-);
 
-Route::patch(
-    'staff-attendances/{staffId}/{year}/{month}/{day}',
-    [StaffAttendanceController::class, 'update']
-);
+    // ==========================================
+    // Staff Attendance API
+    // Composite Primary Key
+    // ==========================================
 
-Route::delete(
-    'staff-attendances/{staffId}/{year}/{month}/{day}',
-    [StaffAttendanceController::class, 'destroy']
-);
+    Route::get('staff-attendances', [StaffAttendanceController::class, 'index']);
 
+    Route::post('staff-attendances', [StaffAttendanceController::class, 'store']);
 
-// ==========================================
-// Staff Salary API
-// Composite Primary Key
-// ==========================================
+    Route::get(
+        'staff-attendances/{staffId}/{year}/{month}/{day}',
+        [StaffAttendanceController::class, 'show']
+    );
 
-Route::get('staff-salaries', [StaffSalaryController::class, 'index']);
-Route::post('staff-salaries', [StaffSalaryController::class, 'store']);
+    Route::patch(
+        'staff-attendances/{staffId}/{year}/{month}/{day}',
+        [StaffAttendanceController::class, 'update']
+    );
 
-Route::get(
-    'staff-salaries/{staffId}/{year}/{month}',
-    [StaffSalaryController::class, 'show']
-);
+    Route::delete(
+        'staff-attendances/{staffId}/{year}/{month}/{day}',
+        [StaffAttendanceController::class, 'destroy']
+    );
 
-Route::patch(
-    'staff-salaries/{staffId}/{year}/{month}',
-    [StaffSalaryController::class, 'update']
-);
 
-Route::delete(
-    'staff-salaries/{staffId}/{year}/{month}',
-    [StaffSalaryController::class, 'destroy']
-);
+    // ==========================================
+    // Staff Salary API
+    // Composite Primary Key
+    // ==========================================
 
+    Route::get('staff-salaries', [StaffSalaryController::class, 'index']);
 
-// ==========================================
-// Library Members CRUD API
-// ==========================================
+    Route::post('staff-salaries', [StaffSalaryController::class, 'store']);
 
-Route::apiResource('lib-members', LibMemberController::class);
+    Route::get(
+        'staff-salaries/{staffId}/{year}/{month}',
+        [StaffSalaryController::class, 'show']
+    );
 
+    Route::patch(
+        'staff-salaries/{staffId}/{year}/{month}',
+        [StaffSalaryController::class, 'update']
+    );
 
-// ==========================================
-// Library Loans CRUD API
-// ==========================================
+    Route::delete(
+        'staff-salaries/{staffId}/{year}/{month}',
+        [StaffSalaryController::class, 'destroy']
+    );
 
-Route::apiResource('lib-loans', LibLoanController::class);
 
+    // ==========================================
+    // Library Members CRUD API
+    // ==========================================
 
-// ==========================================
-// Timetable API
-// Composite Primary Key
-// ==========================================
+    Route::apiResource('lib-members', LibMemberController::class);
 
-Route::get('timetables', [TimetableController::class, 'index']);
-Route::post('timetables', [TimetableController::class, 'store']);
 
-Route::get(
-    'timetables/{weekday}/{lessonHour}/{teacherId}',
-    [TimetableController::class, 'show']
-);
+    // ==========================================
+    // Library Loans CRUD API
+    // ==========================================
 
-Route::patch(
-    'timetables/{weekday}/{lessonHour}/{teacherId}',
-    [TimetableController::class, 'update']
-);
+    Route::apiResource('lib-loans', LibLoanController::class);
 
-Route::delete(
-    'timetables/{weekday}/{lessonHour}/{teacherId}',
-    [TimetableController::class, 'destroy']
-);
 
+    // ==========================================
+    // Timetable API
+    // Composite Primary Key
+    // ==========================================
 
-// ==========================================
-// Scores API
-// Composite Primary Key
-// ==========================================
+    Route::get('timetables', [TimetableController::class, 'index']);
 
-Route::get('scores', [ScoreController::class, 'index']);
-Route::post('scores', [ScoreController::class, 'store']);
+    Route::post('timetables', [TimetableController::class, 'store']);
 
-Route::get(
-    'scores/{studentId}/{subjectId}/{examYear}',
-    [ScoreController::class, 'show']
-);
+    Route::get(
+        'timetables/{weekday}/{lessonHour}/{teacherId}',
+        [TimetableController::class, 'show']
+    );
 
-Route::patch(
-    'scores/{studentId}/{subjectId}/{examYear}',
-    [ScoreController::class, 'update']
-);
+    Route::patch(
+        'timetables/{weekday}/{lessonHour}/{teacherId}',
+        [TimetableController::class, 'update']
+    );
 
-Route::delete(
-    'scores/{studentId}/{subjectId}/{examYear}',
-    [ScoreController::class, 'destroy']
-);
+    Route::delete(
+        'timetables/{weekday}/{lessonHour}/{teacherId}',
+        [TimetableController::class, 'destroy']
+    );
 
 
-// ==========================================
-// Tuition Discounts API
-// Composite Primary Key
-// ==========================================
+    // ==========================================
+    // Scores API
+    // Composite Primary Key
+    // ==========================================
 
-Route::get('tuition-discounts', [TuitionDiscountController::class, 'index']);
-Route::post('tuition-discounts', [TuitionDiscountController::class, 'store']);
+    Route::get('scores', [ScoreController::class, 'index']);
 
-Route::get(
-    'tuition-discounts/{studentId}/{discountYear}',
-    [TuitionDiscountController::class, 'show']
-);
+    Route::post('scores', [ScoreController::class, 'store']);
 
-Route::patch(
-    'tuition-discounts/{studentId}/{discountYear}',
-    [TuitionDiscountController::class, 'update']
-);
+    Route::get(
+        'scores/{studentId}/{subjectId}/{examYear}',
+        [ScoreController::class, 'show']
+    );
 
-Route::delete(
-    'tuition-discounts/{studentId}/{discountYear}',
-    [TuitionDiscountController::class, 'destroy']
-);
+    Route::patch(
+        'scores/{studentId}/{subjectId}/{examYear}',
+        [ScoreController::class, 'update']
+    );
 
+    Route::delete(
+        'scores/{studentId}/{subjectId}/{examYear}',
+        [ScoreController::class, 'destroy']
+    );
 
-// ==========================================
-// Income CRUD API
-// ==========================================
 
-Route::apiResource('incomes', IncomeController::class);
+    // ==========================================
+    // Tuition Discounts API
+    // Composite Primary Key
+    // ==========================================
 
+    Route::get('tuition-discounts', [TuitionDiscountController::class, 'index']);
 
-// ==========================================
-// Other Income API
-// Composite Primary Key
-// income_id + source_id
-// ==========================================
+    Route::post('tuition-discounts', [TuitionDiscountController::class, 'store']);
 
-Route::get('other-incomes', [OtherIncomeController::class, 'index']);
-Route::post('other-incomes', [OtherIncomeController::class, 'store']);
+    Route::get(
+        'tuition-discounts/{studentId}/{discountYear}',
+        [TuitionDiscountController::class, 'show']
+    );
 
-Route::get(
-    'other-incomes/{incomeId}/{sourceId}',
-    [OtherIncomeController::class, 'show']
-);
+    Route::patch(
+        'tuition-discounts/{studentId}/{discountYear}',
+        [TuitionDiscountController::class, 'update']
+    );
 
-Route::patch(
-    'other-incomes/{incomeId}/{sourceId}',
-    [OtherIncomeController::class, 'update']
-);
+    Route::delete(
+        'tuition-discounts/{studentId}/{discountYear}',
+        [TuitionDiscountController::class, 'destroy']
+    );
 
-Route::delete(
-    'other-incomes/{incomeId}/{sourceId}',
-    [OtherIncomeController::class, 'destroy']
 
-    
-);
-// Expense CRUD API
-Route::apiResource('expenses', ExpenseController::class);
-// Purchase CRUD API
-Route::apiResource('purchases', PurchaseController::class);
-// ==========================================
-// Stock In and Stock Out API
-// ==========================================
+    // ==========================================
+    // Income CRUD API
+    // ==========================================
 
-Route::middleware(['auth:sanctum', 'level:stock_level,1'])->group(function () {
-    Route::apiResource('stock-ins', StockInController::class);
-    Route::apiResource('stock-outs', StockOutController::class);
-});
+    Route::apiResource('incomes', IncomeController::class);
 
-// ==========================================
-// Authentication API
-// ==========================================
 
-Route::post('login', [AuthController::class, 'login']);
+    // ==========================================
+    // Other Income API
+    // Composite Primary Key
+    // income_id + source_id
+    // ==========================================
 
-Route::middleware(['auth:sanctum', 'level:admin_level,1'])->group(function () {
-    Route::post('register', [AuthController::class, 'register']);
-});
+    Route::get('other-incomes', [OtherIncomeController::class, 'index']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('user', [AuthController::class, 'me']);
-});
+    Route::post('other-incomes', [OtherIncomeController::class, 'store']);
 
-// ==========================================
-// Users and User Levels API
-// Admin level required
-// ==========================================
+    Route::get(
+        'other-incomes/{incomeId}/{sourceId}',
+        [OtherIncomeController::class, 'show']
+    );
 
-Route::middleware(['auth:sanctum', 'level:admin_level,1'])->group(function () {
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('user-levels', UserLevelController::class);
-});
+    Route::patch(
+        'other-incomes/{incomeId}/{sourceId}',
+        [OtherIncomeController::class, 'update']
+    );
+
+    Route::delete(
+        'other-incomes/{incomeId}/{sourceId}',
+        [OtherIncomeController::class, 'destroy']
+    );
+
+
+    // ==========================================
+    // Expense CRUD API
+    // ==========================================
+
+    Route::apiResource('expenses', ExpenseController::class);
+
+
+    // ==========================================
+    // Purchase CRUD API
+    // ==========================================
+
+    Route::apiResource('purchases', PurchaseController::class);
+
+
+    // ==========================================
+    // Stock In and Stock Out API
+    // Stock Level Required
+    // ==========================================
+
+    Route::middleware(['auth:sanctum', 'level:stock_level,1'])->group(function () {
+
+        Route::apiResource('stock-ins', StockInController::class);
+
+        Route::apiResource('stock-outs', StockOutController::class);
+
+    });
+
+
+    // ==========================================
+    // Authentication API
+    // ==========================================
+
+    Route::post('login', [AuthController::class, 'login']);
+
+
+    // ==========================================
+    // Register API
+    // Admin Level Required
+    // ==========================================
+
+    Route::middleware(['auth:sanctum', 'level:admin_level,1'])->group(function () {
+
+        Route::post('register', [AuthController::class, 'register']);
+
+    });
+
+
+    // ==========================================
+    // Authenticated User API
+    // ==========================================
+
+    Route::middleware('auth:sanctum')->group(function () {
+
+        Route::post('logout', [AuthController::class, 'logout']);
+
+        Route::get('user', [AuthController::class, 'me']);
+
+        Route::post('me/avatar', [AuthController::class, 'uploadAvatar']);
+
+    });
+
+
+    // ==========================================
+    // Users and User Levels API
+    // Admin Level Required
+    // ==========================================
+
+    Route::middleware(['auth:sanctum', 'level:admin_level,1'])->group(function () {
+
+        Route::apiResource('users', UserController::class);
+
+        Route::apiResource('user-levels', UserLevelController::class);
+
+    });
+
 });

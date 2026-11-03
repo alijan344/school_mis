@@ -16,6 +16,7 @@ class StaffResource extends JsonResource
             'fathername' => $this->fathername,
             'gender' => $this->gender,
             'birth_year' => $this->birth_year,
+            'age' => $this->age,
             'photo' => $this->photo,
             'phone' => $this->phone,
             'email' => $this->email,
